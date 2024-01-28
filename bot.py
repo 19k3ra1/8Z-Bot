@@ -2,6 +2,9 @@ import nextcord
 from nextcord import Intents, Activity, ActivityType
 from nextcord.ext import commands
 import info
+import os
+from keep_alive import keep_alive
+keep_alive()
 
 intents = Intents.default()
 intents.members = True
