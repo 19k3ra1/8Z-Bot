@@ -24,4 +24,4 @@ async def update_activity():
     await client.change_presence(activity=activity)
 
 client.load_extension('commands')
-client.run(os.environ.get('token'))
+client.run(info.token)
