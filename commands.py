@@ -27,7 +27,7 @@ class MyCommands(commands.Cog):
             emb.set_footer(text=f"Poll started by {ctx.user.name} • {current_time}")
 
             # Send the embed and get the Message object
-            msg = await ctx.channel.send(embed=emb)
+            msg = await ctx.response.send_message(embed=emb)
 
             await msg.add_reaction("✅")
             await msg.add_reaction("❌")
@@ -52,7 +52,7 @@ class MyCommands(commands.Cog):
 
             emb.set_footer(text=f"Command triggered by {ctx.user.name} • {current_time}")
 
-            await ctx.channel.send(embed=emb)
+            await ctx.response.send_message(embed=emb)
         else:
             await ctx.response.send_message(f"Cannot find member named: {someone}", ephemeral=True)
 
@@ -76,7 +76,7 @@ class MyCommands(commands.Cog):
                 emb.add_field(name="Thursday", value="Year 8, 8:30am, M202\nGeography,  8:50am, M114\nDesign and Technology - Food Technology, 9:50am, N/A\nEnglish, 11:10am, M212\nPersonal Social and Health Education (PSHE), 12:10pm, M201\nReligous Education, 14:00pm, M115\nYear 8, 15:00pm, M202")
                 emb.add_field(name="Friday", value="Year 8, 8:30am, M202\nSpanish, 8:50am, M117\nEnglish, 9:50am, M124 - CIRCLE\nDrama, 11:10am, M004 - Drama Studio\nHistory, 12:10pm, M115\nScience, 14:00pm, M313\nYear 8, 15:00pm, M202")
                 emb.set_footer(text="“Be Careful Who You Trust, Sergeant. People You Know Can Hurt You The Most.” - Ghost")
-                await ctx.channel.send(embed=emb)
+                await ctx.response.send_message(embed=emb)
             elif week.upper() == "B":
                 emb = nextcord.Embed(title="The timetable for Week B is...")
                 emb.add_field(name="Monday", value="Year 8, 8:30am, M202\nMusic, 8:50am, M108\nMathematics, 9:50am, N/A\nSpanish, 11:10am, M117\nScience, 12:10, M313\nHistory, 14:00pm, M116\nYear 8, 15:00pm, M202")
@@ -85,9 +85,19 @@ class MyCommands(commands.Cog):
                 emb.add_field(name="Thursday", value="Year 8, 8:30am, M202\nHistory, 8:50am, M115\nEnglish, M212, 9:50am\nGeography, 11:10am, M114\nDesign and Technology - Food and Technology, 12:10pm, M101\nPersonal Social and Health Education (PSHE), 14:00pm, M201\nYear 8, 15:00pm, M202")
                 emb.add_field(name="Friday", value="Year 8, 8:30am, M202\nDrama, M004 - Drama Studio\nSpanish, 9:50am, M117\nGeography. 11:10am, M114\nScience, 12:10pm, M313\nEnglish, 14:00pm, M212\nYear 8, 15:00pm, M202")
                 emb.set_footer(text="“Teachers can open the door, but you must enter it yourself.” - Some random guy on google")
-                await ctx.channel.send(embed=emb)
+                await ctx.response.send_message(embed=emb)
         else:
             await ctx.response.send_message("Invalid input. Please provide 'A' or 'B'.", ephemeral=True)
+
+    @nextcord.slash_command(name="createchannel", description="Lets the bot create a custom channel in a few clicks.")
+    async def createchannel(self, ctx: Interaction, channel_name: str):
+        if ctx.user.guild_permissions.administrator or ctx.user.id in self.bypassers:
+           text_channel = await ctx.guild.create_text_channel(name=channel_name)
+           await ctx.response.send_message(f"Successfully created channel: {text_channel.mention}")
+        else:
+            await ctx.response.send_message(f"{ctx.user.mention} not allowed!!", ephemeral=True)
+            
+
 
         
 def setup(client):
